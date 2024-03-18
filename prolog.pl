@@ -26,8 +26,10 @@ recommend_item(antihealing) :-
     item_class(healing).
 
 start :- nl, write("Especialista de Lendas"), nl,
-    write("Selecione o item do campeão inimigo: "),
+    write("Selecione o tipo do campeão inimigo: "),
     read(A), nl,
     recommend_item(A),
     write('O aconselhamento é: '),
     write(A), nl.
+
+example :- nl, write('Hello!!!!'), nl.
