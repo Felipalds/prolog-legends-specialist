@@ -16,20 +16,39 @@ champion_class(bruiser).
 champion_class(assassin).
 champion_class(mage).
 champion_class(hyper_carry).
-champion_class(caster).
 champion_class(tank).
-champion_class(peel).
-champion_class(engage).
 
 % Recommendations
 recommend_item(antihealing) :-
     item_class(healing).
 
-start :- nl, write("Especialista de Lendas"), nl,
-    write("Selecione o tipo do campeão inimigo: "),
-    read(A), nl,
-    recommend_item(A),
-    write('O aconselhamento é: '),
-    write(A), nl.
+get_class(Champion) :-
+    read(Class),
+    assertz(champion_class(Champion, Class)),
+    write("So the class is "), write(Class), nl.
 
-example :- nl, write('Hello!!!!'), nl.
+add_item_on_list(OldList, NewList) :-
+    champion_class(enemy, EnemyType),
+    champion_class(user, UserType),
+    (EnemyType == adc, UserType == mage ->
+        NewList = [ludens | OldList];
+        NewList = OldList).
+
+
+save_list(List) :-
+    retractall(saved_list(_)),
+    assertz(saved_list(List)).
+
+
+start :- nl, write("Especialista de Lendas"), nl,
+    write("Selecione a sua classe: (bruiser, assassin, mage, hyper_carry, caster, tank, peel, engage)"), nl,
+    get_class(user),
+    write("Selecione o tipo do inimigo: (bruiser, assassin, mage, hyper_carry, caster, tank, peel, engage)"), nl,
+    get_class(enemy),
+    add_item_on_list([], NewList),
+    save_list(NewList),
+    saved_list(List),
+    write(List).
+
+    
+
