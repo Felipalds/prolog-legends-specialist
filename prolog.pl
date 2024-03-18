@@ -1,14 +1,32 @@
-% Facts: champion(Name, Build)
-champion(ashe, [berserkers_greaves, infinity_edge, runaans_hurricane, guardian_angel, rapid_firecannon, bloodthirster]).
-champion(jinx, [berserkers_greaves, infinity_edge, runaans_hurricane, guardian_angel, rapid_firecannon, bloodthirster]).
-champion(yasuo, [berserkers_greaves, infinity_edge, phantom_dancer, guardian_angel, bloodthirster, steraks_gage]).
+% Item Classes
+item_class(antihealing).
+item_class(armor).
+item_class(magic_resist).
+item_class(lethality).
+item_class(utility).
+item_class(shield).
+item_class(attack_speed).
+item_class(life_steal).
+item_class(healing).
+item_class(ad_damage).
+item_class(ap_damage).
 
-% Rules
-% Define a predicate to get the build for a champion
-get_build(Champion, Build) :-
-    champion(Champion, Build).
+% Champion Classes
+champion_class(bruiser).
+champion_class(assassin).
+champion_class(mage).
+champion_class(hyper_carry).
+champion_class(caster).
+champion_class(tank).
+champion_class(support).
 
-% Define a predicate to recommend a build for a champion
-recommend_build(Champion) :-
-    get_build(Champion, Build),
-    write('Recommended build for '), write(Champion), write(': '), write(Build), nl.
+% Recommendations
+recommend_item(antihealing) :-
+    item_class(healing).
+
+start :- nl, write("Especialista de Lendas"), nl,
+    write("Selecione o item do campeão inimigo: "),
+    read(A), nl,
+    recommend_item(A),
+    write('O aconselhamento é: '),
+    write(A), nl.
