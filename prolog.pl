@@ -18,7 +18,8 @@ champion_class(mage).
 champion_class(hyper_carry).
 champion_class(caster).
 champion_class(tank).
-champion_class(support).
+champion_class(peel).
+champion_class(engage).
 
 % Recommendations
 recommend_item(antihealing) :-
