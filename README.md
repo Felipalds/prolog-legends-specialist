@@ -61,3 +61,15 @@
 
     likez(zoz, luiz) :- likes_dbz(luiz), likes_yamcha(luiz) #false, because luiz does not likes yamcha
 ```
+
+## Relations in Prolog
+- If we say "Amit has a bike", we are relationing Amit and Bike
+- But we can ask, "Does Amit has a bike?"
+```
+    brother(X, Y) :- parent(Z, X), parent(Z, Y), male(X), male(Y)
+```
+
+## Prolog is basically a frontend to a tree
+- When we define a relation between two objects, we are creting two nodes in a tree
+- When we define a object propertie, we are defining a propertie to a specific node
+![](./assets/mother_and_sister_relationship.jpg)
