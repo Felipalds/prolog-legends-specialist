@@ -24,7 +24,8 @@ get_class(Champion) :-
     assertz(champion_class(Champion, Class)),
     write("So the class is "), write(Class), nl.
 
-healing_matchup(OldList, NewList, UserType) :-
+healing_matchup(OldList, NewList) :-
+    champion_class(user, UserType),
     write('O inimigo se cura? sim/nao'), nl,
     read(EnemyHeals),
     (UserType == mage, EnemyHeals == 'sim' ->
@@ -43,7 +44,8 @@ healing_matchup(OldList, NewList, UserType) :-
     NewList = TempList.
 
 
-tank_matchup(OldList, NewList, UserType) :-
+tank_matchup(OldList, NewList) :-
+    champion_class(user, UserType),
     write('O inimigo builda vida ou resistência? (vida/resistencia) '), nl,
     read(BuildType),
     (UserType == mage, BuildType == vida ->
@@ -59,9 +61,11 @@ tank_matchup(OldList, NewList, UserType) :-
         NewList = OldList).
 
 
-cc_matchup(OldList, NewList, UserType) :-
-    write('Aqui2'), nl,
-    (UserType == mage ->
+cc_matchup(OldList, NewList) :-
+    write('Dá CC? sim/nao'), nl,
+    champion_class(user, UserType),
+    read(GivesCC),
+    (UserType == mage, GivesCC == sim ->
         NewList = [banshee | OldList];
         NewList = OldList),
     (UserType == adc ->
@@ -115,17 +119,12 @@ add_item_on_list(OldList, NewList) :-
         healing_matchup(TempList, NewList, UserType);
         % Tank
         EnemyType == tank ->
-        tank_matchup(OldList, TempList, UserType),
-        healing_matchup(TempList, NewList, UserType);
+        tank_matchup(OldList, TempList),
+        % healing_matchup(TempList, NewList, UserType);
+
         % healing_matchup(OldList, NewList, UserType);
         NewList = OldList).
     % Healing Choice
-    % healing_matchup(OldList, NewList, UserType).
-    % write('O inimigo tem CC (Controle de Grupo)? sim/nao'), nl,
-    % read(EnemyHasCC),
-    % (EnemyHasCC == 'sim' ->
-    %     cc_matchup(OldList, NewList, UserType);
-    %     NewList = OldList).
     
 
 save_list(List) :-
@@ -138,7 +137,12 @@ start :- nl, write("Especialista de Lendas"), nl,
     get_class(user),
     write("Selecione o tipo do inimigo: (bruiser, assassin, mage, adc, tank)"), nl,
     get_class(enemy),
-    add_item_on_list([], NewList),
+    add_item_on_list([], OldList),
+
+    healing_matchup(OldList, OldList2),
+
+    cc_matchup(OldList2, NewList);
+
     save_list(NewList),
     saved_list(List),
     write(List).
