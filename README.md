@@ -73,3 +73,30 @@
 - When we define a relation between two objects, we are creting two nodes in a tree
 - When we define a object propertie, we are defining a propertie to a specific node
 ![](./assets/mother_and_sister_relationship.jpg)
+
+
+## Prolog Lists
+- Used to store atoms
+- Non-numeric programming
+- Can be **empty** or **nom-empty**
+- The first item is HEAD, the rest is TAIL
+
+
+```
+[a, b, c] = [x | [b, c] ]
+
+[a, b, c] = [a, b | [c] ]
+
+[a, b, c] = [a, b, c | [ ] ]
+
+L = [ a, b, c ]
+Tail = [ b, c ]
+L = [a | Tail] %valid
+
+```
+
+
+
+
+
+

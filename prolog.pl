@@ -18,6 +18,8 @@ champion_class(mage).
 champion_class(hyper_carry).
 champion_class(tank).
 
+enemy_cures()
+
 % Recommendation
 get_class(Champion) :-
     read(Class),
@@ -95,7 +97,7 @@ add_item_on_list(OldList, NewList) :-
         append(OldList, [trindade], NewList);
         % Bruiser
         EnemyType == bruiser, UserType == mage ->
-        append(OldList, [zhonyas], NewList);
+append(OldList, [zhonyas], NewList);
         EnemyType == bruiser, UserType == adc ->
         append(OldList, [arco_escudo], NewList);
         EnemyType == bruiser, UserType == adc ->
