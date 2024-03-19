@@ -24,41 +24,35 @@ get_class(Champion) :-
     assertz(champion_class(Champion, Class)),
     write("So the class is "), write(Class), nl.
 
+healing_matchup(OldList, NewList, UserType) :-
+    write('O inimigo se cura? sim/nao'), nl,
+    read(EnemyHeals),
+    (UserType == mage, EnemyHeals == 'sim' ->
+        append(OldList, [morellonomicon], TempList1);
+    UserType == adc, EnemyHeals == 'sim' ->
+        append(OldList, [lembrete_mortal], TempList1);
+    UserType == bruiser, EnemyHeals == 'sim' ->
+        append(OldList, [quimiopunk], TempList1);
+    UserType == tank, EnemyHeals == 'sim' ->
+        append(OldList, [espinhos], TempList1);
+    UserType == assassin, EnemyHeals == 'sim' ->
+        append(OldList, [quimiopunk], TempList1);
+    % Default case
+    TempList1 = OldList).
+
 tank_matchup(OldList, NewList, UserType) :-
     write('O inimigo builda vida ou resistência? (vida/resistencia) '), nl,
     read(BuildType),
     (UserType == mage, BuildType == vida ->
-        NewList = [liandry | OldList];
-        NewList = OldList),
-    (UserType == mage, BuildType == resistencia ->
-        NewList = [vazio | OldList];
-        NewList = OldList),
-    (UserType == adc, BuildType == vida ->
-        NewList = [rei_destruido | OldList];
-        NewList = OldList),
-    (UserType == adc, BuildType == resistencia ->
-        NewList = [dominik | OldList];
-        NewList = OldList),
-    (UserType == assassin, BuildType == resistencia ->
-        NewList = [serylda | OldList];
-        NewList = OldList).
-
-healing_matchup(OldList, NewList, UserType) :-
-    write('Aqui'), nl,
-    (UserType == mage ->
-        NewList = [morellonomicon | OldList];
-        NewList = OldList),
-    (UserType == adc ->
-        NewList = [lembrete_mortal | OldList];
-        NewList = OldList),
-    (UserType == bruiser ->
-        NewList = [quimiopunk | OldList];
-        NewList = OldList),
-    (UserType == tank ->
-        NewList = [espinhos | OldList];
-        NewList = OldList),
-    (UserType == assassin ->
-        NewList = [quimiopunk | OldList];
+        append(OldList, [liandry], NewList);
+        UserType == mage, BuildType == resistencia ->    
+        append(OldList, [cajado_vazio], NewList);
+        UserType == adc, BuildType == vida ->
+        append(OldList, [rei_destruido], NewList);
+        UserType == adc, BuildType == resistencia ->
+        append(OldList, [dominik], NewList);
+        UserType == assassin, BuildType == resistencia ->
+        append(OldList, [serylda], NewList);
         NewList = OldList).
 
 
@@ -85,66 +79,48 @@ add_item_on_list(OldList, NewList) :-
     champion_class(user, UserType),
     % ADC Match-ups
     (EnemyType == adc, UserType == mage ->
-        NewList = [ludens | OldList];
-        NewList = OldList),
-    (EnemyType == adc, UserType == tank ->
-        NewList = [egide_de_fogo | OldList];
-        NewList = OldList),
-    (EnemyType == adc, UserType == assassin ->
-        NewList = [cicloespada | OldList];
-        NewList = OldList),
-    (EnemyType == adc, UserType == bruiser ->
-        NewList = [trindade | OldList];
-        NewList = OldList),
-    % Bruiser Match-ups
-    (EnemyType == bruiser, UserType == mage ->
-        NewList = [zhonyas | OldList];
-        NewList = OldList),
-    (EnemyType == bruiser, UserType == adc ->
-        NewList = [arco_escudo | OldList];
-        NewList = OldList),
-    (EnemyType == bruiser, UserType == assassin ->
-        NewList = [eclipse | OldList];
-        NewList = OldList),
-    % Assassin Match-ups
-    (EnemyType == assassin, UserType == mage ->
-        NewList = [zhonyas | OldList];
-        NewList = OldList),
-    (EnemyType == assassin, UserType == adc ->
-        NewList = [arco_escudo | OldList];
-        NewList = OldList),
-    (EnemyType == assassin, UserType == bruiser ->
-        NewList = [sterak | OldList];
-        NewList = OldList),
-    % Mage Match-ups
-    (EnemyType == mage, UserType == mage ->
-        NewList = [banshee | OldList];
-        NewList = OldList),
-    (EnemyType == mage, UserType == tank ->
-        NewList = [rookern | OldList];
-        NewList = OldList),
-    (EnemyType == mage, UserType == assassin ->
-        NewList = [malmortius | OldList];
-        NewList = OldList),
-    (EnemyType == mage, UserType == bruiser ->
-        NewList = [malmortius | OldList];
-        NewList = OldList),
-    write(NewList), nl,
-    % Tank Match-ups
-    (EnemyType == tank ->
-        tank_matchup(OldList, NewList, UserType);
-        NewList = OldList),
-    % Healing Choice
-    write('O inimigo se cura? sim/nao'), nl,
-    read(EnemyHeals),
-    (EnemyHeals == 'sim' ->
+        append(OldList, [ludens], NewList);
+        EnemyType == adc, UserType == tank ->
+        append(OldList, [egide_de_fogo], NewList);
+        EnemyType == adc, UserType == assassin ->
+        append(OldList, [cicloespada], NewList);
+        EnemyType == adc, UserType == bruiser ->
+        append(OldList, [trindade], NewList);
+        % Bruiser
+        EnemyType == bruiser, UserType == mage ->
+        append(OldList, [zhonyas], NewList);
+        EnemyType == bruiser, UserType == adc ->
+        append(OldList, [arco_escudo], NewList);
+        EnemyType == bruiser, UserType == adc ->
+        append(OldList, [eclipse], NewList);
+        % Assassin
+        EnemyType == assassin, UserType == mage ->
+        append(OldList, [zhonyas], NewList);
+        EnemyType == assassin, UserType == adc ->
+        append(OldList, [arco_escudo], NewList);
+        EnemyType == assassin, UserType == bruiser ->
+        append(OldList, [sterak], NewList);
+        % Mage
+        EnemyType == mage, UserType == tank ->
+        append(OldList, [rookern], NewList);
+        EnemyType == mage, UserType == mage ->
+        append(OldList, [banshee], NewList);
+        EnemyType == mage, UserType == assassin ->
+        append(OldList, [malmortius], NewList);
+        EnemyType == mage, UserType == bruiser ->
+        append(OldList, [malmortius], NewList);
+        % Tank
+        EnemyType == tank ->
+        tank_matchup(OldList, NewList, UserType),
         healing_matchup(OldList, NewList, UserType);
-        NewList = OldList),
-    write('O inimigo tem CC (Controle de Grupo)? sim/nao'), nl,
-    read(EnemyHasCC),
-    (EnemyHasCC == 'sim' ->
-        cc_matchup(OldList, NewList, UserType);
         NewList = OldList).
+    % Healing Choice
+    % healing_matchup(OldList, NewList, UserType).
+    % write('O inimigo tem CC (Controle de Grupo)? sim/nao'), nl,
+    % read(EnemyHasCC),
+    % (EnemyHasCC == 'sim' ->
+    %     cc_matchup(OldList, NewList, UserType);
+    %     NewList = OldList).
     
 
 save_list(List) :-
