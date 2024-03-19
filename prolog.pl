@@ -18,10 +18,7 @@ champion_class(mage).
 champion_class(hyper_carry).
 champion_class(tank).
 
-% Recommendations
-recommend_item(antihealing) :-
-    item_class(healing).
-
+% Recommendation
 get_class(Champion) :-
     read(Class),
     assertz(champion_class(Champion, Class)),
@@ -47,6 +44,7 @@ tank_matchup(OldList, NewList, UserType) :-
         NewList = OldList).
 
 healing_matchup(OldList, NewList, UserType) :-
+    write('Aqui'), nl,
     (UserType == mage ->
         NewList = [morellonomicon | OldList];
         NewList = OldList),
@@ -65,6 +63,7 @@ healing_matchup(OldList, NewList, UserType) :-
 
 
 cc_matchup(OldList, NewList, UserType) :-
+    write('Aqui2'), nl,
     (UserType == mage ->
         NewList = [banshee | OldList];
         NewList = OldList),
@@ -117,18 +116,32 @@ add_item_on_list(OldList, NewList) :-
     (EnemyType == assassin, UserType == bruiser ->
         NewList = [sterak | OldList];
         NewList = OldList),
+    % Mage Match-ups
+    (EnemyType == mage, UserType == mage ->
+        NewList = [banshee | OldList];
+        NewList = OldList),
+    (EnemyType == mage, UserType == tank ->
+        NewList = [rookern | OldList];
+        NewList = OldList),
+    (EnemyType == mage, UserType == assassin ->
+        NewList = [malmortius | OldList];
+        NewList = OldList),
+    (EnemyType == mage, UserType == bruiser ->
+        NewList = [malmortius | OldList];
+        NewList = OldList),
+    write(NewList), nl,
     % Tank Match-ups
     (EnemyType == tank ->
         tank_matchup(OldList, NewList, UserType);
         NewList = OldList),
     % Healing Choice
-    write('O inimigo se cura? sim/nao')
-    read(EnemyHeals)
+    write('O inimigo se cura? sim/nao'), nl,
+    read(EnemyHeals),
     (EnemyHeals == 'sim' ->
         healing_matchup(OldList, NewList, UserType);
         NewList = OldList),
-    write('O inimigo tem CC (Crowd Control)? sim/nao')
-    read(EnemyHasCC)
+    write('O inimigo tem CC (Controle de Grupo)? sim/nao'), nl,
+    read(EnemyHasCC),
     (EnemyHasCC == 'sim' ->
         cc_matchup(OldList, NewList, UserType);
         NewList = OldList).
