@@ -134,9 +134,9 @@ save_list(List) :-
 
 
 start :- nl, write("Especialista de Lendas"), nl,
-    write("Selecione a sua classe: (bruiser, assassin, mage, hyper_carry, caster, tank, peel, engage)"), nl,
+    write("Selecione a sua classe: (bruiser, assassin, mage, adc, tank)"), nl,
     get_class(user),
-    write("Selecione o tipo do inimigo: (bruiser, assassin, mage, hyper_carry, caster, tank, peel, engage)"), nl,
+    write("Selecione o tipo do inimigo: (bruiser, assassin, mage, adc, tank)"), nl,
     get_class(enemy),
     add_item_on_list([], NewList),
     save_list(NewList),
