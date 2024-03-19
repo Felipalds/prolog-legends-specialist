@@ -28,17 +28,20 @@ healing_matchup(OldList, NewList, UserType) :-
     write('O inimigo se cura? sim/nao'), nl,
     read(EnemyHeals),
     (UserType == mage, EnemyHeals == 'sim' ->
-        append(OldList, [morellonomicon], TempList1);
+        append(OldList, [morellonomicon], TempList);
     UserType == adc, EnemyHeals == 'sim' ->
-        append(OldList, [lembrete_mortal], TempList1);
+        append(OldList, [lembrete_mortal], TempList);
     UserType == bruiser, EnemyHeals == 'sim' ->
-        append(OldList, [quimiopunk], TempList1);
+        append(OldList, [quimiopunk], TempList);
     UserType == tank, EnemyHeals == 'sim' ->
-        append(OldList, [espinhos], TempList1);
+        append(OldList, [espinhos], TempList);
     UserType == assassin, EnemyHeals == 'sim' ->
-        append(OldList, [quimiopunk], TempList1);
+        append(OldList, [quimiopunk], TempList);
     % Default case
-    TempList1 = OldList).
+    TempList = OldList),
+    % No additional condition, so directly unify NewList with TempList
+    NewList = TempList.
+
 
 tank_matchup(OldList, NewList, UserType) :-
     write('O inimigo builda vida ou resistência? (vida/resistencia) '), nl,
@@ -108,11 +111,13 @@ add_item_on_list(OldList, NewList) :-
         EnemyType == mage, UserType == assassin ->
         append(OldList, [malmortius], NewList);
         EnemyType == mage, UserType == bruiser ->
-        append(OldList, [malmortius], NewList);
+        append(OldList, [malmortius], TempList),
+        healing_matchup(TempList, NewList, UserType);
         % Tank
         EnemyType == tank ->
-        tank_matchup(OldList, NewList, UserType),
-        healing_matchup(OldList, NewList, UserType);
+        tank_matchup(OldList, TempList, UserType),
+        healing_matchup(TempList, NewList, UserType);
+        % healing_matchup(OldList, NewList, UserType);
         NewList = OldList).
     % Healing Choice
     % healing_matchup(OldList, NewList, UserType).
