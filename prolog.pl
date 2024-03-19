@@ -118,13 +118,16 @@ add_item_on_list(OldList, NewList) :-
         TempList1 = HealedList),
     NewList = TempList1.
     
-
+save_list([]) :- !.
 save_list(List) :-
     retractall(saved_list(_)),
     assertz(saved_list(List)).
 
 
 start :- nl, write("Especialista de Lendas"), nl,
+    retractall(champion_class(enemy, _)), % Clear EnemyType
+    retractall(champion_class(user, _)),
+    save_list([]),
     write("Selecione a sua classe: (bruiser, assassin, mage, hyper_carry, caster, tank, peel, engage)"), nl,
     get_class(user),
     write("Selecione o tipo do inimigo: (bruiser, assassin, mage, hyper_carry, caster, tank, peel, engage)"), nl,
@@ -132,7 +135,7 @@ start :- nl, write("Especialista de Lendas"), nl,
     add_item_on_list([], NewList),
     save_list(NewList),
     saved_list(List),
-    write(List).
+    write(List). 
 
     
 
