@@ -1,3 +1,5 @@
+% Autores: Pedro Henrique Ferreira Zoz, Luiz Felipe Fonseca Rosa
+
 % Item Classes
 item_class(antihealing).
 item_class(armor).
@@ -60,7 +62,7 @@ tank_matchup(OldList, NewList, UserType) :-
 
 
 cc_matchup(OldList, NewList, UserType) :-
-    write('O inimigo tem cc? sim/nao'), nl,
+    write('O inimigo tem CC (Controle de Grupo)? sim/nao'), nl,
     read(EnemyCC),
     (UserType == mage, EnemyCC == 'sim' ->
         append(OldList, [banshee], TempList);
@@ -128,9 +130,9 @@ start :- nl, write("Especialista de Lendas"), nl,
     retractall(champion_class(enemy, _)), % Clear EnemyType
     retractall(champion_class(user, _)),
     save_list([]),
-    write("Selecione a sua classe: (bruiser, assassin, mage, hyper_carry, caster, tank, peel, engage)"), nl,
+    write("Selecione a sua classe: (bruiser, assassin, mage, adc, tank)"), nl,
     get_class(user),
-    write("Selecione o tipo do inimigo: (bruiser, assassin, mage, hyper_carry, caster, tank, peel, engage)"), nl,
+    write("Selecione o tipo do inimigo: (bruiser, assassin, mage, adc, tank)"), nl,
     get_class(enemy),
     add_item_on_list([], NewList),
     save_list(NewList),
